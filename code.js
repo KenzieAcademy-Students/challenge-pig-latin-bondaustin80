@@ -31,7 +31,7 @@ function consonantToPigLatin(word) {
         }
     }
     if (pigWord === "") {
-        pigWord = consGroup + "-ay"
+        pigWord = consGroup + "ay"
     }
     return pigWord
 }
@@ -65,10 +65,15 @@ console.assert(
 )
 
 function sentenceToPigLatin(string) {
+    if (string === "") {
+        return ""
+    }
     let array = string.split(" ")
     let punctuation
     for (let i = 0; i < array.length; i++) {
-        if (array[i].includes(".") || array[i].includes(",") || array[i].includes("!") || array[i].includes("?")) {
+        if (array[i] === "") {
+            array[i] = ""
+        } else if (array[i].includes(".") || array[i].includes(",") || array[i].includes("!") || array[i].includes("?")) {
             punctuation = array[i].substring(array[i].length - 1)
             array[i] = startWithChar(array[i].substring(0, array[i].length - 1)) + punctuation
         } else {
@@ -88,3 +93,23 @@ console.assert(
     sentenceToPigLatin("One cheeseburger please") === "One-yay eeseburger-chay ease-play",
     "sentenceToPigLatin does not return correct string"
 )
+
+//Intermediate
+
+let english = document.createElement("textarea")
+english.setAttribute("id", "english")
+
+document.body.append(english)
+
+let englishResult = document.createElement("p")
+
+document.body.append(englishResult)
+
+function analyzeEnglish() {
+    let result = sentenceToPigLatin(english.value)
+    englishResult.innerText = result
+}
+
+document.getElementById("english").addEventListener("keyup", analyzeEnglish)
+
+document.getElementById("english").addEventListener("change", analyzeEnglish)
