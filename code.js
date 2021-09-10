@@ -31,7 +31,7 @@ function consonantToPigLatin(word) {
         }
     }
     if (pigWord === "") {
-        pigWord = consGroup + "ay"
+        pigWord = consGroup + "-ay"
     }
     return pigWord
 }
@@ -96,9 +96,14 @@ console.assert(
 
 //Intermediate
 
+let engLabel = document.createElement("label")
+engLabel.setAttribute("for", "english")
+engLabel.innerText = "English to Pig Latin:"
+
 let english = document.createElement("textarea")
 english.setAttribute("id", "english")
 
+document.body.append(engLabel)
 document.body.append(english)
 
 let englishResult = document.createElement("p")
@@ -112,4 +117,79 @@ function analyzeEnglish() {
 
 document.getElementById("english").addEventListener("keyup", analyzeEnglish)
 
-document.getElementById("english").addEventListener("change", analyzeEnglish)
+document.getElementById("english").addEventListener("input", analyzeEnglish)
+
+//Advanced
+
+//str.length-4
+
+let pigLabel = document.createElement("label")
+pigLabel.setAttribute("for", "pigLatin")
+pigLabel.innerText = "Pig Latin to English:"
+
+let pigLatin = document.createElement("textarea")
+pigLatin.setAttribute = ("id", "pigLatin")
+
+document.body.append(pigLabel)
+document.body.append(pigLatin)
+
+let pigResult = document.createElement("p")
+
+document.body.append(pigResult)
+
+function vowelRevert(word) {
+    let newWord = word.slice(0, word.length-4)
+    return newWord
+}
+
+console.assert(
+    vowelRevert("eat-yay") === "eat",
+    "vowelRevert does not return original word"
+)
+
+console.assert(
+    vowelRevert("uncle-yay") === "uncle",
+    "vowelRevert does not return original word"
+)
+
+function consonantRevert(word) {
+    let newWord
+    if (word.endsWith("-ay")) {
+        newWord = word.slice(0, word.length-3)
+        return newWord
+    } else {
+        let hyphenIndex = word.lastIndexOf("-") //https://www.w3schools.com/jsref/jsref_lastindexof.asp
+        let ayIndex = word.lastIndexOf("ay")
+        let consonantGroup = word.slice(hyphenIndex+1, ayIndex)
+        newWord = consonantGroup + word.slice(0, hyphenIndex)
+        return newWord
+    }
+}
+
+console.assert(
+    consonantRevert("my-ay") === "my",
+    "consonantRevert does not return correct word"
+)
+
+console.assert(
+    consonantRevert("ond-Bay") === "Bond",
+    "consonantRevert does not return correct word"
+)
+
+function determineType(word) {
+    if (word.endsWith("-yay")) {
+        return vowelRevert(word)
+    } else {
+        return consonantRevert(word)
+    }
+}
+
+console.assert(
+    determineType("ond-Bay") === "Bond",
+    "determineType does not return correct word"
+)
+
+console.assert(
+    determineType("eat-yay") === "eat",
+    "determineType does not return correct word"
+)
