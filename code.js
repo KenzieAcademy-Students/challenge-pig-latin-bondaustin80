@@ -193,3 +193,42 @@ console.assert(
     determineType("eat-yay") === "eat",
     "determineType does not return correct word"
 )
+
+function pigToEnglish(words) {
+    if (words === "") {
+        return ""
+    }
+    let array = words.split(" ")
+    let punctuation
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] === "") {
+            array[i] = ""
+        } else if (array[i].includes(".") || array[i].includes(",") || array[i].includes("!") || array[i].includes("?")) {
+            punctuation = array[i].substring(array[i].length - 1)
+            array[i] = determineType(array[i].substring(0, array[i].length - 1)) + punctuation
+        } else {
+            array[i] = determineType(array[i])
+        }
+    }
+    let newString = array.join(" ")
+    return newString
+}
+
+console.assert(
+    pigToEnglish("ello-Hay, my-ay ame-nay is-yay Austin-yay ond-Bay") === "Hello, my name is Austin Bond",
+    "pigToEnglish does not translate a string properly"
+)
+
+console.assert(
+    pigToEnglish("is-Thay is-yay a-yay est-tay or-fay ig-pay atin-lay o-tay english-yay") === "This is a test for pig latin to english",
+    "pigToEnglish does not translate a string properly"
+)
+
+function analyzePig() {
+    let result = pigToEnglish(pigLatin.value)
+    pigResult.innerText = result
+}
+
+pigLatin.addEventListener("keyup", analyzePig)
+
+pigLatin.addEventListener("input", analyzePig)
